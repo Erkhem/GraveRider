@@ -4,13 +4,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.google.gson.Gson;
 
 import android.app.Activity;
 import android.util.Log;
-import android.widget.Toast;
 
 public class FileUtils {
 
@@ -25,7 +23,7 @@ public class FileUtils {
 		try {
 			StringBuilder stringBuilder = new StringBuilder();
 			
-			String actualContent = openFile(fileName, activity);
+			String actualContent = openFile(activity);
 			actualContent = actualContent.replace("]", "");
 			
 			stringBuilder.append(actualContent);
@@ -38,7 +36,7 @@ public class FileUtils {
 			stringBuilder.append(", ");
 			stringBuilder.append("]");
 			
-			FileOutputStream fOut = activity.openFileOutput(fileName, activity.MODE_WORLD_READABLE);
+			FileOutputStream fOut = activity.openFileOutput(fileName, activity.MODE_WORLD_WRITEABLE);
 			fOut.write(stringBuilder.toString().getBytes());
 			fOut.close();
 			
@@ -47,7 +45,7 @@ public class FileUtils {
 		}
 	}
 
-	public String openFile(String fileName, Activity activity) {
+	public String openFile(Activity activity) {
 		try {
 			FileInputStream fin = activity.openFileInput(fileName);
 			int c;

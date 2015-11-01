@@ -59,4 +59,13 @@
         android:layout_centerHorizontal="true"
         android:text="Zapisz" />
 
+    <Button
+        android:id="@+id/dataBtn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Dane" />
+
 </RelativeLayout>

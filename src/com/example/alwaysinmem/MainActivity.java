@@ -1,11 +1,10 @@
 package com.example.alwaysinmem;
 
-import java.io.FileInputStream;
-
 import org.json.JSONException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -22,16 +21,41 @@ public class MainActivity extends Activity implements LocationListener {
 
 	private Button localizationBtn;
 	private Button saveBtn;
+	private Button dataBtn;
 
 	private LocationManager locationManager;
 
 	private String lattitude;
 	private String longtitude;
 
+	private FileUtils fileUtils = new FileUtils();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		// View.OnClickListener navigateListener = new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// Uri gmmIntentUri =
+		// Uri.parse("google.navigation:q=50.94527238698728,18.64847579660566");
+		// Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+		// mapIntent.setPackage("com.google.android.apps.maps");
+		// startActivity(mapIntent);
+		// }
+		//
+		// };
+
+		View.OnClickListener getDataActivityListener = new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent dataIntent = new Intent(MainActivity.this, DataActivity.class);
+				startActivity(dataIntent);
+			}
+		};
 
 		View.OnClickListener getLocationListener = new View.OnClickListener() {
 
@@ -48,8 +72,6 @@ public class MainActivity extends Activity implements LocationListener {
 				final String firstname = ((EditText) findViewById(R.id.imieInput)).getText().toString();
 				final String lastname = ((EditText) findViewById(R.id.nazwiskoInput)).getText().toString();
 
-				FileUtils fileUtils = new FileUtils();
-
 				Grave grave = new Grave();
 
 				grave.setFirstname(firstname);
@@ -59,10 +81,7 @@ public class MainActivity extends Activity implements LocationListener {
 
 				try {
 					fileUtils.saveFile(grave, MainActivity.this);
-					Toast.makeText(getBaseContext(), "file saved", Toast.LENGTH_SHORT).show();
-
-					String fileContent = fileUtils.openFile("grave1", MainActivity.this);
-					Toast.makeText(getBaseContext(), fileContent, Toast.LENGTH_SHORT).show();
+					Toast.makeText(getBaseContext(), fileUtils.openFile(MainActivity.this), Toast.LENGTH_SHORT).show();
 				} catch (JSONException e) {
 					e.printStackTrace();
 					Log.e("ERROR", "Błąd podczas zapisu");
@@ -72,9 +91,11 @@ public class MainActivity extends Activity implements LocationListener {
 
 		localizationBtn = (Button) findViewById(R.id.localizationBtn);
 		saveBtn = (Button) findViewById(R.id.saveBtn);
+		dataBtn = (Button) findViewById(R.id.dataBtn);
 
 		localizationBtn.setOnClickListener(getLocationListener);
 		saveBtn.setOnClickListener(saveListener);
+		dataBtn.setOnClickListener(getDataActivityListener);
 
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	}
@@ -121,4 +142,5 @@ public class MainActivity extends Activity implements LocationListener {
 	public void onProviderDisabled(String provider) {
 		Toast.makeText(this, "Disabled provider " + provider, Toast.LENGTH_SHORT).show();
 	}
+
 }
