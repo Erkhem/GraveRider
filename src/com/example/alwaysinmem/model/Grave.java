@@ -1,4 +1,4 @@
-package com.example.alwaysinmem;
+package com.example.alwaysinmem.model;
 
 import java.io.Serializable;
 

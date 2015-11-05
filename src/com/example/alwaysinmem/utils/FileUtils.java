@@ -1,10 +1,11 @@
-package com.example.alwaysinmem;
+package com.example.alwaysinmem.utils;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import org.json.JSONException;
 
+import com.example.alwaysinmem.model.Grave;
 import com.google.gson.Gson;
 
 import android.app.Activity;

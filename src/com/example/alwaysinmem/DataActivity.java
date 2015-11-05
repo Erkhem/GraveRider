@@ -4,18 +4,21 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.alwaysinmem.model.Grave;
+import com.example.alwaysinmem.utils.FileUtils;
+import com.example.alwaysinmem.utils.RestUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
@@ -25,6 +28,7 @@ public class DataActivity extends Activity {
 
 	private Gson gson = new Gson();
 	private FileUtils fileUtils = new FileUtils();
+	private RestUtils httpUtils = new RestUtils();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,18 @@ public class DataActivity extends Activity {
 			navBtn.setLayoutParams(layoutParams);
 			navBtn.setText("Nawiguj");
 
+			ImageButton sendBtn = new ImageButton(this);
+			sendBtn.setLayoutParams(layoutParams);
+			sendBtn.setBackgroundResource(R.drawable.ic_backup);
+
+			sendBtn.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					httpUtils.send(grave);
+				}
+			});
+
 			navBtn.setOnClickListener(new View.OnClickListener() {
 
 				@Override
@@ -74,6 +90,7 @@ public class DataActivity extends Activity {
 
 			rowToAdd.addView(nameLbl);
 			rowToAdd.addView(navBtn);
+			rowToAdd.addView(sendBtn);
 
 			table.addView(rowToAdd, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 		}
