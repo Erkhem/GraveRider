@@ -38,19 +38,6 @@ public class MainActivity extends Activity implements LocationListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// View.OnClickListener navigateListener = new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// Uri gmmIntentUri =
-		// Uri.parse("google.navigation:q=50.94527238698728,18.64847579660566");
-		// Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-		// mapIntent.setPackage("com.google.android.apps.maps");
-		// startActivity(mapIntent);
-		// }
-		//
-		// };
-
 		View.OnClickListener getDataActivityListener = new View.OnClickListener() {
 
 			@Override
@@ -64,7 +51,7 @@ public class MainActivity extends Activity implements LocationListener {
 
 			@Override
 			public void onClick(View v) {
-				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, MainActivity.this);
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, MainActivity.this);
 			}
 		};
 
@@ -78,9 +65,9 @@ public class MainActivity extends Activity implements LocationListener {
 				Grave grave = new Grave();
 
 				grave.setFirstname(firstname);
-				grave.setLasename(lastname);
-				grave.setLongtitute(longtitude);
-				grave.setLattitute(lattitude);
+				grave.setLastname(lastname);
+				grave.setLongtitude(longtitude);
+				grave.setLattitude(lattitude);
 
 				try {
 					fileUtils.saveFile(grave, MainActivity.this);

@@ -44,6 +44,7 @@ public class DataActivity extends Activity {
 
 		Type listType = new TypeToken<ArrayList<Grave>>() {
 		}.getType();
+
 		List<Grave> graves = gson.fromJson(fileContent, listType);
 
 		TableLayout table = (TableLayout) this.findViewById(R.id.tableLay);
@@ -56,7 +57,7 @@ public class DataActivity extends Activity {
 
 			TextView nameLbl = new TextView(this);
 			nameLbl.setLayoutParams(layoutParams);
-			nameLbl.setText(grave.getFirstname() + " " + grave.getLasename());
+			nameLbl.setText(grave.getFirstname() + " " + grave.getLastname());
 
 			Button navBtn = new Button(this);
 			navBtn.setLayoutParams(layoutParams);
@@ -78,9 +79,9 @@ public class DataActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					if (grave.getLattitute() != null && grave.getLongtitute() != null) {
+					if (grave.getLattitude() != null && grave.getLongtitude() != null) {
 						Uri gmmIntentUri = Uri
-								.parse("google.navigation:q=" + grave.getLattitute() + "," + grave.getLongtitute());
+								.parse("google.navigation:q=" + grave.getLattitude() + "," + grave.getLongtitude());
 						Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 						mapIntent.setPackage("com.google.android.apps.maps");
 						startActivity(mapIntent);
@@ -110,4 +111,10 @@ public class DataActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+	}
+
 }

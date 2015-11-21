@@ -8,11 +8,11 @@ public class Grave implements Serializable {
 
 	private String firstname;
 
-	private String lasename;
+	private String lastname;
 
-	private String lattitute;
+	private String lattitude;
 
-	private String longtitute;
+	private String longtitude;
 	
 
 	public String getFirstname() {
@@ -23,28 +23,28 @@ public class Grave implements Serializable {
 		this.firstname = firstname;
 	}
 
-	public String getLasename() {
-		return lasename;
+	public String getLastname() {
+		return lastname;
 	}
 
-	public void setLasename(String lasename) {
-		this.lasename = lasename;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
-	public String getLattitute() {
-		return lattitute;
+	public String getLattitude() {
+		return lattitude;
 	}
 
-	public void setLattitute(String lattitute) {
-		this.lattitute = lattitute;
+	public void setLattitude(String lattitude) {
+		this.lattitude = lattitude;
 	}
 
-	public String getLongtitute() {
-		return longtitute;
+	public String getLongtitude() {
+		return longtitude;
 	}
 
-	public void setLongtitute(String longtitute) {
-		this.longtitute = longtitute;
+	public void setLongtitude(String longtitude) {
+		this.longtitude = longtitude;
 	}
 
 }
