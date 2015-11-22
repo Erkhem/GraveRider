@@ -51,12 +51,12 @@ public class DataActivity extends Activity {
 			e1.printStackTrace();
 		}
 
-		String fileContent = fileUtils.openFile(this);
+//		String fileContent = fileUtils.openFile(this);
 		
-		int lastCommaIdx = fileContent.lastIndexOf(",");
+//		int lastCommaIdx = fileContent.lastIndexOf(",");
 
-		fileContent = fileContent.substring(0, lastCommaIdx)
-				+ fileContent.substring(lastCommaIdx + 1, fileContent.length());
+//		fileContent = fileContent.substring(0, lastCommaIdx)
+//				+ fileContent.substring(lastCommaIdx + 1, fileContent.length());
 
 		Type listType = new TypeToken<ArrayList<Grave>>() {
 		}.getType();

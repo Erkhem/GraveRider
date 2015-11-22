@@ -88,8 +88,9 @@ public class MainActivity extends Activity implements LocationListener {
 				}
 				
 				try {
-					fileUtils.saveFile(grave, MainActivity.this);
-				} catch (JSONException e) {
+					restUtils.send(grave);
+//					fileUtils.saveFile(grave, MainActivity.this);
+				} catch (Exception e) {
 					e.printStackTrace();
 					Log.e("ERROR", "Błąd podczas zapisu");
 				}
