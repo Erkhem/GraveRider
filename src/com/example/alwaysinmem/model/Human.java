@@ -1,5 +1,9 @@
 package com.example.alwaysinmem.model;
 
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+
 public class Human implements Serializable{
 
 	private static final long serialVersionUID = 1350827597088088608L;
@@ -15,9 +19,20 @@ public class Human implements Serializable{
 	private String email;
 
 	private String password;
+	
+	private List<Grave> graves = Collections.emptyList();
+	
 
 	public String getName() {
 		return name;
+	}
+
+	public List<Grave> getGraves() {
+		return graves;
+	}
+
+	public void setGraves(List<Grave> graves) {
+		this.graves = graves;
 	}
 
 	public void setName(String name) {

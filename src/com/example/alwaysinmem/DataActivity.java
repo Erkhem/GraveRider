@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.alwaysinmem.model.Grave;
+import com.example.alwaysinmem.model.Human;
 import com.example.alwaysinmem.utils.FileUtils;
 import com.example.alwaysinmem.utils.RestUtils;
 import com.google.gson.Gson;
@@ -26,17 +27,32 @@ import android.widget.TextView;
 
 public class DataActivity extends Activity {
 
+	public final static String GRAVE_BUNDLE = "GRAVE_BUNDLE";
+	
 	private Gson gson = new Gson();
 	private FileUtils fileUtils = new FileUtils();
-	private RestUtils httpUtils = new RestUtils();
+	private RestUtils restUtils = new RestUtils();
 
+	private String login;
+
+	private Human human;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_data);
+		
+		Bundle bundle = getIntent().getExtras();
+		login = bundle.getString(LoginActivity.CREDENDIALS);
+		
+		try {
+			human = restUtils.getUser(login);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 
 		String fileContent = fileUtils.openFile(this);
-
+		
 		int lastCommaIdx = fileContent.lastIndexOf(",");
 
 		fileContent = fileContent.substring(0, lastCommaIdx)
@@ -45,8 +61,19 @@ public class DataActivity extends Activity {
 		Type listType = new TypeToken<ArrayList<Grave>>() {
 		}.getType();
 
-		List<Grave> graves = gson.fromJson(fileContent, listType);
-
+		List<Grave> graves = new ArrayList<Grave>(); //gson.fromJson(fileContent, listType);
+		List<Grave> gravesFromServer;
+		try {
+			gravesFromServer = restUtils.downloadByLogin(login);
+			for (Grave grave : gravesFromServer) {
+				if (!graves.contains(grave)) {
+					graves.add(grave);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		TableLayout table = (TableLayout) this.findViewById(R.id.tableLay);
 		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
@@ -67,11 +94,25 @@ public class DataActivity extends Activity {
 			sendBtn.setLayoutParams(layoutParams);
 			sendBtn.setBackgroundResource(R.drawable.ic_backup);
 
+			Button shareBtn = new Button(this);
+			shareBtn.setLayoutParams(layoutParams);
+			shareBtn.setText("Dziel");
+
+			shareBtn.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent dataIntent = new Intent(DataActivity.this, ShareActivity.class);
+					dataIntent.putExtra(GRAVE_BUNDLE, grave);
+					startActivity(dataIntent);
+				}
+			});
+
 			sendBtn.setOnClickListener(new View.OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					httpUtils.send(grave);
+					restUtils.send(grave);
 				}
 			});
 
@@ -92,6 +133,7 @@ public class DataActivity extends Activity {
 			rowToAdd.addView(nameLbl);
 			rowToAdd.addView(navBtn);
 			rowToAdd.addView(sendBtn);
+			rowToAdd.addView(shareBtn);
 
 			table.addView(rowToAdd, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 		}

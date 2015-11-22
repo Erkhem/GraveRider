@@ -1,9 +1,15 @@
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tableLay"
+    android:id="@+id/scrollView1"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" 
-    android:background="#AAAAAA"
-    tools:context="com.example.alwaysinmem.DataActivity">
+    android:layout_height="fill_parent" >
 
-</TableLayout>
+    <TableLayout
+        android:id="@+id/tableLay"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#AAAAAA"
+        tools:context="com.example.alwaysinmem.DataActivity" >
+    </TableLayout>
+
+</ScrollView>

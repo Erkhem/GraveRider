@@ -3,7 +3,9 @@ package com.example.alwaysinmem;
 import org.json.JSONException;
 
 import com.example.alwaysinmem.model.Grave;
+import com.example.alwaysinmem.model.Human;
 import com.example.alwaysinmem.utils.FileUtils;
+import com.example.alwaysinmem.utils.RestUtils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -32,17 +34,25 @@ public class MainActivity extends Activity implements LocationListener {
 	private String longtitude;
 
 	private FileUtils fileUtils = new FileUtils();
+	
+	private String login;
+	
+	private RestUtils restUtils = new RestUtils();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		Bundle extras = getIntent().getExtras();
+		login = extras.getString(LoginActivity.CREDENDIALS);
+		
 		View.OnClickListener getDataActivityListener = new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent dataIntent = new Intent(MainActivity.this, DataActivity.class);
+				dataIntent.putExtra(LoginActivity.CREDENDIALS, login);
 				startActivity(dataIntent);
 			}
 		};
@@ -68,10 +78,17 @@ public class MainActivity extends Activity implements LocationListener {
 				grave.setLastname(lastname);
 				grave.setLongtitude(longtitude);
 				grave.setLattitude(lattitude);
-
+				
+				Human human;
+				try {
+					human = restUtils.getUser(login);
+					grave.getOwners().add(human);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				
 				try {
 					fileUtils.saveFile(grave, MainActivity.this);
-					Toast.makeText(getBaseContext(), fileUtils.openFile(MainActivity.this), Toast.LENGTH_SHORT).show();
 				} catch (JSONException e) {
 					e.printStackTrace();
 					Log.e("ERROR", "Błąd podczas zapisu");
@@ -124,13 +141,13 @@ public class MainActivity extends Activity implements LocationListener {
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		Toast.makeText(this, "Enabled new provider " + provider, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Włączono GPS " + provider, Toast.LENGTH_SHORT).show();
 
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		Toast.makeText(this, "Disabled provider " + provider, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "WYłączono GPS " + provider, Toast.LENGTH_SHORT).show();
 	}
 
 }
