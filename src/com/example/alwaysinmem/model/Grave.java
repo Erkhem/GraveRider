@@ -2,7 +2,6 @@ package com.example.alwaysinmem.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Grave implements Serializable {
