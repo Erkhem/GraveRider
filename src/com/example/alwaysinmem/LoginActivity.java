@@ -1,13 +1,13 @@
 package com.example.alwaysinmem;
 
 import com.example.alwaysinmem.model.Human;
+import com.example.alwaysinmem.utils.ConnectionUtils;
 import com.example.alwaysinmem.utils.RestUtils;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo.State;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,10 +33,9 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		if (!isConnected()) {
-			Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-			mainIntent.putExtra(CREDENDIALS, ANONYMOUS);
-			startActivity(mainIntent);
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (!ConnectionUtils.isAppConnected(connectivityManager)) {
+			startMainActivity(ANONYMOUS);
 		}
 
 		loginBtn = (Button) findViewById(R.id.loginBtn);
@@ -54,9 +53,7 @@ public class LoginActivity extends Activity {
 					auth = restUtils.auth(login, password);
 
 					if (auth != null) {
-						Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-						mainIntent.putExtra(CREDENDIALS, auth.getLogin());
-						startActivity(mainIntent);
+						startMainActivity(auth.getLogin());
 					} else {
 						Toast.makeText(getBaseContext(), "Nie prawidłowy login lub hasło", Toast.LENGTH_SHORT).show();
 					}
@@ -64,17 +61,9 @@ public class LoginActivity extends Activity {
 					e.printStackTrace();
 				}
 			}
+
 		});
 
-	}
-
-	private Boolean isConnected() {
-		ConnectivityManager connectionManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		State mobile = connectionManager.getNetworkInfo(0).getState();
-		State wifi = connectionManager.getNetworkInfo(1).getState();
-
-		return (mobile == State.CONNECTED || mobile == State.CONNECTING || wifi == State.CONNECTED
-				|| wifi == State.CONNECTING || wifi == State.CONNECTING);
 	}
 
 	@Override
@@ -90,5 +79,11 @@ public class LoginActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	private void startMainActivity(String login) {
+		Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+		mainIntent.putExtra(CREDENDIALS, login);
+		startActivity(mainIntent);
 	}
 }

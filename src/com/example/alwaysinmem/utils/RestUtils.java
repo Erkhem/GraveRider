@@ -23,7 +23,7 @@ import android.util.Log;
 
 public class RestUtils {
 
-	private static final String BASE_URL = "http://192.168.1.7:8080";
+	private static final String BASE_URL = "http://192.168.0.9:8080";
 
 	private RestTemplate restTemplate = new RestTemplate();
 	private Grave graveToSend;

@@ -1,7 +1,6 @@
 package com.example.alwaysinmem;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import com.example.alwaysinmem.model.Grave;
 import com.example.alwaysinmem.model.Human;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class ShareActivity extends Activity {
 
@@ -58,12 +58,13 @@ public class ShareActivity extends Activity {
 					graveToShare.getOwners().add(human);
 					
 					restUtils.updateGravesOwners(graveToShare);
+					
+					Toast.makeText(ShareActivity.this, "Udostępniono dane", Toast.LENGTH_SHORT).show();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-		
 	}
 
 	@Override

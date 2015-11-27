@@ -6,13 +6,16 @@ import java.util.List;
 
 import com.example.alwaysinmem.model.Grave;
 import com.example.alwaysinmem.model.Human;
+import com.example.alwaysinmem.utils.ConnectionUtils;
 import com.example.alwaysinmem.utils.FileUtils;
 import com.example.alwaysinmem.utils.RestUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -37,10 +40,15 @@ public class DataActivity extends Activity {
 
 	private Human human;
 	
+	private Boolean isConnected;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_data);
+		
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		isConnected = ConnectionUtils.isAppConnected(connectivityManager);
 		
 		Bundle bundle = getIntent().getExtras();
 		login = bundle.getString(LoginActivity.CREDENDIALS);
@@ -132,9 +140,11 @@ public class DataActivity extends Activity {
 
 			rowToAdd.addView(nameLbl);
 			rowToAdd.addView(navBtn);
-			rowToAdd.addView(sendBtn);
-			rowToAdd.addView(shareBtn);
-
+			if (isConnected) {
+				rowToAdd.addView(sendBtn);
+				rowToAdd.addView(shareBtn);
+			}
+			
 			table.addView(rowToAdd, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 		}
 	}
