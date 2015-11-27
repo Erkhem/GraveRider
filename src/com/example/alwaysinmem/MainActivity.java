@@ -1,11 +1,16 @@
 package com.example.alwaysinmem;
 
+import java.sql.SQLException;
+
 import org.json.JSONException;
 
 import com.example.alwaysinmem.model.Grave;
 import com.example.alwaysinmem.model.Human;
+import com.example.alwaysinmem.utils.DatabaseHelper;
 import com.example.alwaysinmem.utils.FileUtils;
 import com.example.alwaysinmem.utils.RestUtils;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
 
 import android.app.Activity;
 import android.content.Context;
@@ -34,10 +39,12 @@ public class MainActivity extends Activity implements LocationListener {
 	private String longtitude;
 
 	private FileUtils fileUtils = new FileUtils();
-	
+
 	private String login;
-	
+
 	private RestUtils restUtils = new RestUtils();
+
+	private DatabaseHelper databaseHelper = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +53,13 @@ public class MainActivity extends Activity implements LocationListener {
 
 		Bundle extras = getIntent().getExtras();
 		login = extras.getString(LoginActivity.CREDENDIALS);
-		
+
 		View.OnClickListener getDataActivityListener = new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Intent dataIntent = new Intent(MainActivity.this, DataActivity.class);
+				Intent dataIntent = new Intent(MainActivity.this,
+						DataActivity.class);
 				dataIntent.putExtra(LoginActivity.CREDENDIALS, login);
 				startActivity(dataIntent);
 			}
@@ -61,7 +69,9 @@ public class MainActivity extends Activity implements LocationListener {
 
 			@Override
 			public void onClick(View v) {
-				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, MainActivity.this);
+				locationManager.requestLocationUpdates(
+						LocationManager.NETWORK_PROVIDER, 0, 0,
+						MainActivity.this);
 			}
 		};
 
@@ -69,8 +79,10 @@ public class MainActivity extends Activity implements LocationListener {
 
 			@Override
 			public void onClick(View v) {
-				final String firstname = ((EditText) findViewById(R.id.imieInput)).getText().toString();
-				final String lastname = ((EditText) findViewById(R.id.nazwiskoInput)).getText().toString();
+				final String firstname = ((EditText) findViewById(R.id.imieInput))
+						.getText().toString();
+				final String lastname = ((EditText) findViewById(R.id.nazwiskoInput))
+						.getText().toString();
 
 				Grave grave = new Grave();
 
@@ -78,21 +90,17 @@ public class MainActivity extends Activity implements LocationListener {
 				grave.setLastname(lastname);
 				grave.setLongtitude(longtitude);
 				grave.setLattitude(lattitude);
-				
-				Human human;
+
 				try {
-					human = restUtils.getUser(login);
-					grave.getOwners().add(human);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				
-				try {
-					restUtils.send(grave);
-//					fileUtils.saveFile(grave, MainActivity.this);
-				} catch (Exception e) {
+					final Dao<Grave, Integer> graveDao = getHelper()
+							.getGraveDao();
+					graveDao.create(grave);
+					Human human;
+					// human = restUtils.getUser(login);
+					// grave.get().add(human);
+//					restUtils.send(grave);
+				} catch (SQLException e) {
 					e.printStackTrace();
-					Log.e("ERROR", "Błąd podczas zapisu");
 				}
 			}
 		};
@@ -142,13 +150,23 @@ public class MainActivity extends Activity implements LocationListener {
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		Toast.makeText(this, "Włączono GPS " + provider, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Włączono GPS " + provider, Toast.LENGTH_SHORT)
+				.show();
 
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		Toast.makeText(this, "WYłączono GPS " + provider, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "WYłączono GPS " + provider, Toast.LENGTH_SHORT)
+				.show();
+	}
+
+	private DatabaseHelper getHelper() {
+		if (databaseHelper == null) {
+			databaseHelper = OpenHelperManager.getHelper(this,
+					DatabaseHelper.class);
+		}
+		return databaseHelper;
 	}
 
 }

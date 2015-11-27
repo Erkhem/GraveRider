@@ -4,27 +4,26 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.j256.ormlite.field.DatabaseField;
+
 public class Grave implements Serializable {
 
 	private static final long serialVersionUID = 1231232132131412L;
 
+	@DatabaseField(generatedId = true, columnName = "grave_id")
+	private int graveId;
+	
+	@DatabaseField(canBeNull = false, columnName = "first_name")
 	private String firstname;
-
+	
+	@DatabaseField(canBeNull = false, columnName = "last_name")
 	private String lastname;
 
+	@DatabaseField(columnName = "lattitude")
 	private String lattitude;
 
+	@DatabaseField(columnName = "longitude")
 	private String longtitude;
-
-	private List<Human> owners = new ArrayList<Human>();;
-
-	public List<Human> getOwners() {
-		return owners;
-	}
-
-	public void setOwners(List<Human> owners) {
-		this.owners = owners;
-	}
 
 	public String getFirstname() {
 		return firstname;
@@ -63,7 +62,7 @@ public class Grave implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((firstname == null) ? 0 : firstname.hashCode());
-		result = prime * result + ((owners == null) ? 0 : owners.hashCode());
+//		result = prime * result + ((owners == null) ? 0 : owners.hashCode());
 		result = prime * result + ((lastname == null) ? 0 : lastname.hashCode());
 		result = prime * result + ((lattitude == null) ? 0 : lattitude.hashCode());
 		result = prime * result + ((longtitude == null) ? 0 : longtitude.hashCode());

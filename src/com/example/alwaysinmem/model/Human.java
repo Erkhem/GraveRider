@@ -4,35 +4,36 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
+import com.j256.ormlite.field.DatabaseField;
+
 public class Human implements Serializable{
 
 	private static final long serialVersionUID = 1350827597088088608L;
 
+	@DatabaseField(generatedId = true, columnName = "human_id")
+	private int humanId;
+	
+	@DatabaseField(canBeNull = false, columnName = "name")
 	private String name;
 	
+	@DatabaseField(canBeNull = false, columnName = "last_name")
 	private String lastname;
 	
+	@DatabaseField(canBeNull = false, columnName = "login")
 	private String login;
 	
+	@DatabaseField(canBeNull = true, columnName = "city")
 	private String city;
 	
+	@DatabaseField(canBeNull = true, columnName = "email")
 	private String email;
-
-	private String password;
 	
-	private List<Grave> graves = Collections.emptyList();
+	@DatabaseField(canBeNull = false, columnName = "password")
+	private String password;
 	
 
 	public String getName() {
 		return name;
-	}
-
-	public List<Grave> getGraves() {
-		return graves;
-	}
-
-	public void setGraves(List<Grave> graves) {
-		this.graves = graves;
 	}
 
 	public void setName(String name) {

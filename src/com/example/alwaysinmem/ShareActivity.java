@@ -55,7 +55,9 @@ public class ShareActivity extends Activity {
 				Human human;
 				try {
 					human = restUtils.getUser(choosedLogin);
-					graveToShare.getOwners().add(human);
+					//graveToShare.getOwners().add(human);
+					
+					
 					
 					restUtils.updateGravesOwners(graveToShare);
 				} catch (Exception e) {
