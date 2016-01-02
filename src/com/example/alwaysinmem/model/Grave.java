@@ -76,5 +76,9 @@ public class Grave implements Serializable {
 		return this.getFirstname().equals(toCompare.getFirstname())
 				&& this.getLastname().equals(toCompare.getLastname());
 	}
+	@Override
+	public String toString() {
+		return firstname+" "+lastname;
+	}
 
 }
