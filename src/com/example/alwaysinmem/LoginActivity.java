@@ -82,7 +82,7 @@ public class LoginActivity extends Activity {
 	}
 	
 	private void startMainActivity(String login) {
-		Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+		Intent mainIntent = new Intent(LoginActivity.this, MainPageActivity.class);
 		mainIntent.putExtra(CREDENDIALS, login);
 		startActivity(mainIntent);
 	}

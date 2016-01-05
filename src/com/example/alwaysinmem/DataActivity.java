@@ -45,6 +45,8 @@ public class DataActivity extends ListActivity {
 
 	private String login;
 
+	private ArrayAdapter<Grave> myAdapter;
+	
 	private Human human;
 	
 	private Boolean isConnected;
@@ -96,7 +98,7 @@ public class DataActivity extends ListActivity {
 		g.setLastname("sdf");
 		graves.add(g);
 		
-		ArrayAdapter<Grave> myAdapter = new ArrayAdapter<Grave>(this, R.layout.data_row_layout, R.id.imie_row, graves);
+		myAdapter = new ArrayAdapter<Grave>(this, R.layout.data_row_layout, R.id.imie_row, graves);
 		
 		setListAdapter(myAdapter);
 		
@@ -183,7 +185,7 @@ public class DataActivity extends ListActivity {
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		switch(item.getItemId()){
-		case R.id.menu_delete: graves.remove(info.position); Toast.makeText(getBaseContext(), "DELETE", Toast.LENGTH_SHORT).show(); break;
+		case R.id.menu_delete: graves.remove(info.position); myAdapter.notifyDataSetChanged(); Toast.makeText(getBaseContext(), "DELETE", Toast.LENGTH_SHORT).show(); return true;
 		case R.id.menu_modify: Toast.makeText(getBaseContext(), "MODIFY", Toast.LENGTH_SHORT).show(); break;
 		case R.id.menu_navigateTo: navigate((Grave) getListView().getItemAtPosition(info.position)); break;
 		case R.id.menu_share: shareInfoAboutGrave((Grave) getListView().getItemAtPosition(info.position)); break;
