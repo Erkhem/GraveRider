@@ -73,10 +73,6 @@ public class MainActivity extends Activity implements LocationListener {
 
 			@Override
 			public void onClick(View v) {
-				Intent dataIntent = new Intent(MainActivity.this, DataActivity.class);
-				dataIntent.putExtra(LoginActivity.CREDENDIALS, login);
-				startActivity(dataIntent);
-				/* DELETE COMMENT
 				if (isConnected) {
 					Intent dataIntent = new Intent(MainActivity.this, DataActivity.class);
 					dataIntent.putExtra(LoginActivity.CREDENDIALS, login);
@@ -84,7 +80,6 @@ public class MainActivity extends Activity implements LocationListener {
 				} else {
 					Toast.makeText(MainActivity.this, "Najpierw włącz internet", Toast.LENGTH_LONG).show();
 				}
-				*/
 			}
 		};
 

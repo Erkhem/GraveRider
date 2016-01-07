@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainPageActivity extends Activity{
@@ -20,6 +21,8 @@ public class MainPageActivity extends Activity{
 		
 		Bundle extras = getIntent().getExtras();
 		login = extras.getString(LoginActivity.CREDENDIALS);
+		
+		initHelloText();
 		
 		button = (Button) findViewById(R.id.button_new_item);
 		button.setOnClickListener(new OnClickListener() {
@@ -39,6 +42,7 @@ public class MainPageActivity extends Activity{
 			@Override
 			public void onClick(View v) {
 				Intent dataIntent = new Intent(MainPageActivity.this, DataActivity.class);
+				dataIntent.putExtra(LoginActivity.CREDENDIALS, login);
 				startActivity(dataIntent);
 				 Toast.makeText(getBaseContext(), "Data list", Toast.LENGTH_SHORT).show();
 				
@@ -53,6 +57,11 @@ public class MainPageActivity extends Activity{
 				 Toast.makeText(getBaseContext(), "FAQ clicked", Toast.LENGTH_SHORT).show();
 			}
 		});
+	}
+
+	private void initHelloText() {
+		TextView helloTextView = (TextView) findViewById(R.id.textView1);
+		helloTextView.setText("Witaj, " + login);
 	}	
 
 }
