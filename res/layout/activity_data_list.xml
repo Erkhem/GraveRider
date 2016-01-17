@@ -3,7 +3,7 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0B061C" >
+    android:background="#646464" >
 
     <TextView
         android:id="@+id/list_header"
@@ -12,7 +12,7 @@
         android:paddingBottom="10dp"
         android:text="Lista Grobów"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#d5c9ea" />
+        android:textColor="#000" />
 
     <ListView
         android:id="@android:id/list"

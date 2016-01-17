@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.TableRow.LayoutParams;
 import android.widget.Toast;
 
@@ -45,10 +46,15 @@ public class MainActivity extends Activity implements LocationListener {
 	private RestUtils restUtils = new RestUtils();
 
 	private Boolean isConnected;
-	
+
 	private ProgressBar spinner;
 	private ImageButton tickBtn;
-	
+
+	private EditText nameTextView;
+	private EditText lastnameTextView;
+
+	private Grave grave;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,14 +65,22 @@ public class MainActivity extends Activity implements LocationListener {
 
 		Bundle extras = getIntent().getExtras();
 		login = extras.getString(LoginActivity.CREDENDIALS);
+		grave = (Grave) extras.get(DataActivity.GRAVE_BUNDLE);
 
+		nameTextView = (EditText) findViewById(R.id.imieInput);
+		lastnameTextView = (EditText) findViewById(R.id.nazwiskoInput);
 		localizationBtn = (Button) findViewById(R.id.localizationBtn);
 		saveBtn = (Button) findViewById(R.id.saveBtn);
 		dataBtn = (Button) findViewById(R.id.dataBtn);
-   	 	tickBtn = (ImageButton) findViewById(R.id.tickBtn);
-		
+		tickBtn = (ImageButton) findViewById(R.id.tickBtn);
+
+		if (grave != null) {
+			nameTextView.setText(grave.getFirstname());
+			lastnameTextView.setText(grave.getLastname());
+		}
+
 		spinner = (ProgressBar) findViewById(R.id.progressBar1);
-		
+
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 		View.OnClickListener getDataActivityListener = new View.OnClickListener() {
@@ -88,21 +102,22 @@ public class MainActivity extends Activity implements LocationListener {
 			@Override
 			public void onClick(View v) {
 				LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-				
+
 				tickBtn.setVisibility(View.GONE);
 				spinner.setVisibility(View.VISIBLE);
-				
-				Handler handler = new Handler(); 
-			    handler.postDelayed(new Runnable() { 
-			         public void run() { 
-			        	 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, MainActivity.this);
-			        	 Toast.makeText(MainActivity.this, "Pobrano lokalizację", Toast.LENGTH_SHORT).show();
-			        	 spinner.setVisibility(View.GONE);
 
-			        	 tickBtn.setVisibility(View.VISIBLE);
-			         } 
-			    }, 1500); 
-				
+				Handler handler = new Handler();
+				handler.postDelayed(new Runnable() {
+					public void run() {
+						locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
+								MainActivity.this);
+						Toast.makeText(MainActivity.this, "Pobrano lokalizację", Toast.LENGTH_SHORT).show();
+						spinner.setVisibility(View.GONE);
+
+						tickBtn.setVisibility(View.VISIBLE);
+					}
+				}, 1500);
+
 			}
 		};
 
@@ -110,22 +125,25 @@ public class MainActivity extends Activity implements LocationListener {
 
 			@Override
 			public void onClick(View v) {
-				final String firstname = ((EditText) findViewById(R.id.imieInput)).getText().toString();
-				final String lastname = ((EditText) findViewById(R.id.nazwiskoInput)).getText().toString();
-
-				Grave grave = new Grave();
-
-				grave.setFirstname(firstname);
-				grave.setLastname(lastname);
-				grave.setLongtitude(longtitude);
-				grave.setLattitude(lattitude);
-
+				final String firstname = nameTextView.getText().toString();
+				final String lastname = lastnameTextView.getText().toString();
+				Grave graveToSave = new Grave();
+				if (grave == null) {
+					graveToSave.setFirstname(firstname);
+					graveToSave.setLastname(lastname);
+					graveToSave.setLongtitude(longtitude);
+					graveToSave.setLattitude(lattitude);
+				} else {
+					graveToSave = grave;
+					graveToSave.setFirstname(firstname);
+					graveToSave.setLastname(lastname);
+				}
 				Human human;
 				try {
 					human = restUtils.getUser(login);
-					grave.getOwners().add(human);
+					graveToSave.getOwners().add(human);
 					if (isConnected) {
-						restUtils.send(grave);
+						restUtils.send(graveToSave);
 					}
 					Toast.makeText(MainActivity.this, "Zapisano !", Toast.LENGTH_SHORT).show();
 				} catch (Exception e1) {

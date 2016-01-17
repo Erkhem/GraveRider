@@ -6,31 +6,18 @@ import java.util.List;
 
 public class Grave implements Serializable {
 
-	public String getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public void setDateOfBirth(String dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-
-	public String getDateOfPassaway() {
-		return dateOfPassaway;
-	}
-
-	public void setDateOfPassaway(String dateOfPassaway) {
-		this.dateOfPassaway = dateOfPassaway;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
+	
 	private static final long serialVersionUID = 1231232132131412L;
 
+	private String id;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 	private String firstname;
 
 	private String lastname;
@@ -38,12 +25,6 @@ public class Grave implements Serializable {
 	private String lattitude;
 
 	private String longtitude;
-	
-	private String dateOfBirth;
-	
-	private String dateOfPassaway;
-	
-	private String note;
 
 	private List<Human> owners = new ArrayList<Human>();;
 
@@ -96,9 +77,6 @@ public class Grave implements Serializable {
 		result = prime * result + ((lastname == null) ? 0 : lastname.hashCode());
 		result = prime * result + ((lattitude == null) ? 0 : lattitude.hashCode());
 		result = prime * result + ((longtitude == null) ? 0 : longtitude.hashCode());
-		result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
-		result = prime * result + ((dateOfPassaway == null) ? 0 : dateOfPassaway.hashCode());
-		result = prime * result + ((note == null) ? 0 : note.hashCode());
 		return result;
 	}
 

@@ -23,7 +23,7 @@ import android.util.Log;
 
 public class RestUtils {
 
-	private static final String BASE_URL = "http://192.168.1.7:8080";
+	private static final String BASE_URL = "http://192.168.1.15:8080";
 
 	private RestTemplate restTemplate = new RestTemplate();
 	private Grave graveToSend;
@@ -43,6 +43,10 @@ public class RestUtils {
 		AsyncTask<String, Void, List<Grave>> result = new HttpRequestTaskGet().execute(login);
 		
 		return result.get();
+	}
+	
+	public void deleteByObject(String grave) throws InterruptedException, ExecutionException {
+		new HttpRequestDeleteGrave().execute(grave);
 	}
 
 	public List<String> downloadLogins() throws InterruptedException, ExecutionException {
@@ -111,6 +115,21 @@ public class RestUtils {
 			}
 			return null;
 		}
+	}
+	
+	private class HttpRequestDeleteGrave extends AsyncTask<String, Void, Void> {
+
+		@Override
+		protected Void doInBackground(String... params) {
+			final String url = BASE_URL + "/grave/delete/" + params[0];
+			
+			RestTemplate restTemplate = new RestTemplate();
+			restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+			restTemplate.getForObject(url, String.class);
+			
+			return null;
+		}
+		
 	}
 
 	private class HttpRequestTaskPost extends AsyncTask<Void, Void, List<Grave>> {

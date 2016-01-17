@@ -1,5 +1,6 @@
 package com.example.alwaysinmem;
 
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,13 +15,18 @@ public class MainPageActivity extends Activity{
 	private Button button;
 	private String login;
 	
+	private TextView helloTextView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_homepage);
 		
+		helloTextView = (TextView) findViewById(R.id.textView1);
+		
 		Bundle extras = getIntent().getExtras();
 		login = extras.getString(LoginActivity.CREDENDIALS);
+		
 		
 		initHelloText();
 		
@@ -60,7 +66,7 @@ public class MainPageActivity extends Activity{
 	}
 
 	private void initHelloText() {
-		TextView helloTextView = (TextView) findViewById(R.id.textView1);
+		
 		helloTextView.setText("Witaj, " + login);
 	}	
 
